@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\EventController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -35,9 +36,9 @@ Route::prefix('admin')->group(function (): void {
     })->name('admin.login.submit');
 
     Route::middleware(['auth', 'admin'])->group(function (): void {
-        Route::get('/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('admin.dashboard');
+        Route::get('/dashboard', [EventController::class, 'index'])->name('admin.dashboard');
+
+        Route::post('/events', [EventController::class, 'store'])->name('admin.events.store');
 
         Route::post('/logout', function (Request $request) {
             Auth::logout();
